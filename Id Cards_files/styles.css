@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: aliceblue;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+
+}
+
+.identity {
+  width: 300px;
+  margin: 2px;
+  height: 400px;
+  margin: 20px;
+  font-family: sans-serif;
+  border: black solid 2px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 40px 0px 0px 0px;
+}
+
+.slash {
+  color: red;
+}
+
+.logo {
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+  padding: 20px;
+  color: rgb(25, 62, 25);
+}
+
+img {
+  width: inherit;
+
+}
+
+.image {
+  width: 190px;
+  height: 190px;
+  margin: auto;
+  border: rgb(114, 2, 114) solid 2px;
+  border-radius: 30%;
+  overflow: hidden;
+  transform: rotate(10deg);
+}
+
+.info {
+  color: rgb(59, 10, 59);
+  text-align: center;
+}
+
+.name {
+  padding: 5px;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+div>p {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 17px;
+}
