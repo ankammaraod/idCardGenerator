@@ -37,14 +37,19 @@ const comparator = function (firstElement, secondElement) {
 };
 
 const main = function () {
-
-  const peopleData = parseCsv('./data.csv', '|');
+  const sourceData = process.argv[2];
+  const parsedData = parseCsv(sourceData, '|');
   const sortBy = 'id';
-  const sortedData = peopleData.sort(comparator.bind(sortBy));
+  const sortedData = parsedData.sort(comparator.bind(sortBy));
 
   const idCards = sortedData.map(generatePersonTemplate);
   const htmlPage = generatePageClosure('Identity Cards', idCards);
-  writeFile('./index.html', htmlPage);
+
+  try {
+    writeFile('./index.html', htmlPage);
+  } catch (error) {
+    throw 'unable to write';
+  }
 };
 
 main();
