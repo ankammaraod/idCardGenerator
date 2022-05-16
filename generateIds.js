@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 const fs = require('fs');
 
 const tools = require('../tools/generateTags.js');
