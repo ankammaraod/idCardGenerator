@@ -1,10 +1,9 @@
 /* eslint-disable no-magic-numbers */
 const fs = require('fs');
 
-const tools = require('../tools/generateTags.js');
-const { generateTag } = tools;
-const { generatePageClosure } = tools;
-const { parseCsv } = require('../tools/csvToJsonParser.js');
+const { generateTag } = require('./generateTags.js');
+const { generatePageClosure } = require('./generateTags.js');
+const { parseCsv } = require('./csvParser');
 
 const writeFile = (fileName, info) => fs.writeFileSync(fileName, info, 'utf-8');
 
