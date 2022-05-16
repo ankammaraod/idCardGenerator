@@ -1,44 +1,49 @@
-/* eslint-disable max-len */
 const fs = require('fs');
 
-const { generateTag } = require('../tools/generateTags.js');
-const { generateLink } = require('../tools/generateTags.js');
+const tools = require('../tools/generateTags.js');
+const { generateTag } = tools;
+const { generatePageClosure } = tools;
 const { parseCsv } = require('../tools/csvToJsonParser.js');
 
-const readFile = (fileName) => fs.readFileSync(fileName, 'utf-8');
 const writeFile = (fileName, info) => fs.writeFileSync(fileName, info, 'utf-8');
 
-const generateIdCard = function (personDetails) {
-  const keys = Object.keys(personDetails);
-  let replacedText = this;
-
-  for (let index = 0; index < keys.length; index++) {
-    replacedText = replacedText.replaceAll('--' + keys[index] + '--',
-      personDetails[keys[index]]);
-  }
-  return replacedText;
+const generateHeader = (name) => {
+  const slash = generateTag('span', name[0], 'class', 'slash');
+  return generateTag('header', slash + name.slice(1), 'class', 'logo');
 };
 
-const generatePageClosure = function (bodyContent) {
-  const title = generateTag('title', 'Id Cards');
-  const link = generateLink('./styles.css');
-  const head = generateTag('head', title + link,);
-  const body = generateTag('body', bodyContent);
-  return generateTag('html', head + body);
+const generateImage = (personDetails) => {
+  const path = personDetails.imagePath;
+  const image = '<img src=' + '"' + path + '"' + ' alt="image">';
+  return generateTag('div', image, 'class', 'image');
+};
+
+const generatePersonTemplate = (personDetails) => {
+  const logo = generateHeader('/thoughtworks');
+  const image = generateImage(personDetails);
+  const name = generateTag('div', personDetails.name, 'class', 'name');
+  const details = generateTag('p', 'Emp. Id: ' + personDetails.id +
+    ' Blood Group: ' + personDetails.bloodGroup);
+  const closureForDetails = generateTag('div', details);
+
+  const info = generateTag(
+    'div', name + closureForDetails, 'class', 'info');
+  const profile = generateTag('div', image + info, 'class', 'profile');
+  return generateTag('div', logo + profile, 'class', 'identity');
+};
+
+const comparator = function (firstElement, secondElement) {
+  return firstElement[this] - secondElement[this];
 };
 
 const main = function () {
 
   const peopleData = parseCsv('./data.csv', '|');
+  const sortBy = 'id';
+  const sortedData = peopleData.sort(comparator.bind(sortBy));
 
-  const personTemplate = readFile('./personTemplate.html');
-
-  const PageTemplate = generatePageClosure('--idCards--');
-
-  const idCards = peopleData.map(generateIdCard.bind(personTemplate)).join('');
-
-  const htmlPage = PageTemplate.replace('--idCards--', idCards);
-
+  const idCards = sortedData.map(generatePersonTemplate);
+  const htmlPage = generatePageClosure('Identity Cards', idCards);
   writeFile('./index.html', htmlPage);
 };
 
